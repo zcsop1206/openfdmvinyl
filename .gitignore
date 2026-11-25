@@ -1,0 +1,20 @@
+__pycache__/
+*.pyc
+.pytest_cache/
+*.egg-info/
+build/
+dist/
+.venv/
+
+# everything the scripts generate: discs, takes, previews, sliced blanks
+out/
+*.gcode
+!printers/*.gcode
+hardware/turntable/print/**/*.gcode
+
+# recordings and audio you supply (keep copyrighted music out of the repo)
+*.wav
+!hardware/turntable/test_disc/data/*.wav
+*.mp3
+*.flac
+*.m4a

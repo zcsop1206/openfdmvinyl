@@ -1,0 +1,28 @@
+{
+  "_comment": "Copy this file, fill in your printer, pass it as --printer path/to/yours.json. Every field is explained in docs/ADAPTING_YOUR_PRINTER.md. Values here are the Bambu P1S numbers the discs that played were printed with; fields you delete fall back to them.",
+  "name": "My printer",
+
+  "_bed": "Printable area in mm, and the keep-out from its edge for groove vertices.",
+  "bed_x": 256.0,
+  "bed_y": 256.0,
+  "max_z": 250.0,
+  "bed_margin": 1.0,
+
+  "_extrusion": "Bead width w_e = extrusion_width_factor * nozzle_diameter. Measure it (guide, step 3) and set the factor so w_e matches.",
+  "filament_diameter": 1.75,
+  "nozzle_diameter": 0.4,
+  "extrusion_width_factor": 1.2,
+  "layer_height": 0.2,
+
+  "_motion": "The groove pass only. Speeds in mm/s, acceleration in mm/s^2, flow in mm^3/s. Keep groove_accel_max at or under your firmware's acceleration limit.",
+  "groove_speed_max": 30.0,
+  "groove_speed_min": 4.0,
+  "groove_accel_max": 2000.0,
+  "travel_speed": 150.0,
+  "z_hop": 1.0,
+  "max_volumetric_flow": 12.0,
+
+  "_planner": "How many G-code segments per second your firmware sustains without stuttering, and the shortest segment it keeps.",
+  "max_segment_rate": 500.0,
+  "min_segment_length": 0.05
+}
