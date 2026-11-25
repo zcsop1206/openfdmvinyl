@@ -55,4 +55,4 @@ A first version (2026, with Samantha Chan on the turntable CAD and Niegel Fernan
 
 ## License
 
-Code (`src/`, `tests/`, the Python scripts): MIT, see `LICENSE`. Hardware (CAD, STLs, print plates): CERN-OHL-P-2.0, see `LICENSE-HARDWARE.md`. `hardware/turntable/cad/vendor/STS3215_03a.step` is from TheRobotStudio/SO-ARM100 under Apache-2.0 (see the vendor folder).
+Code (`src/`, `tests/`, the Python scripts): MIT, see `LICENSE`. Hardware (CAD, STLs, print plates): CERN-OHL-P-2.0, see `LICENSE-HARDWARE.md` for what it covers and `LICENSE-HARDWARE.txt` for the text. `hardware/turntable/cad/vendor/STS3215_03a.step` is from TheRobotStudio/SO-ARM100 under Apache-2.0 (see the vendor folder).
