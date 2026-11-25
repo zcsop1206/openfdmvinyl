@@ -52,7 +52,7 @@ def main():
     for r in R_STEPS:
         asm = T.assembly(r_stylus=r)
         ang = math.radians(T.arm_angle(r))
-        dx, dy = T.DROP
+        dx, dy = T.DROP[0], T.ARM_SIDE * T.DROP[1]
         drop = np.array([T.ARM_D + dx * math.cos(ang) - dy * math.sin(ang), dx * math.sin(ang) + dy * math.cos(ang), T.Z_ARM])
         row = {"r_mm": r, "arm_deg": round(T.arm_angle(r), 2)}
         for an in arm_names:

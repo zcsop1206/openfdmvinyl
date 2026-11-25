@@ -27,11 +27,11 @@ def assembly(r_stylus=65.0, platter_deg=0.0):
     out.update({k: v for k, v in a.items() if k not in ("base", "platter", "weight")})
     out["platter (open)"] = (Rot(Z=platter_deg) * Pos(0, 0, T.Z_HORN) * S.open_platter(), "platter")
     A = Pos(T.ARM_D, 0, T.Z_ARM) * Rot(Z=T.arm_angle(r_stylus))
-    out["weight"] = (A * Pos(CARRIAGE_X, 0, -(30 - 2 - T.BEAM - 0.5) - 0.3) * T.weight(), "arm")
+    out["weight"] = (A * T.arm_side(Pos(CARRIAGE_X, 0, -(30 - 2 - T.BEAM - 0.5) - 0.3) * T.weight()), "arm")
     # Nov 24: damper, clamp screw, clamp ring (steady.py, rim_clamp.py)
     out["damper cup"] = (Pos(T.ARM_D, 0, 0) * S.SD.cup(), "frame")
     out["clamp screw"] = (Pos(T.ARM_D, 0, 0) * S.SD.clamp_screw(), "frame")
-    out["damper skirt"] = (A * S.SD.skirt(), "arm")
+    out["damper skirt"] = (A * T.arm_side(S.SD.skirt()), "arm")
     t_rec = T.Z_REC - T.Z_HORN - T.HUB_H
     out["clamp ring"] = (Rot(Z=platter_deg) * Pos(0, 0, T.Z_HORN + S.RC.ring_top_z(t_rec)) * Rot(Z=-S.RC.snug_turn(t_rec))
                          * S.RC.ring(), "platter")

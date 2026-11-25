@@ -33,6 +33,33 @@ GROOVE_R = (46.0, 84.0)
 ARM_L = 150.0             # pivot to stylus
 ARM_D = 136.51            # pivot to spindle (solved for min max tracking error)
 ARM_BETA = 25.08          # headshell offset angle, deg; max error 0.60 deg, nulls r 50.2 / 77.0
+# Which side of the pivot-spindle line the stylus swings on (Nov 25 2026). The platter turns clockwise seen from
+# above (the only way the spiral plays forwards), and the groove must run under the stylus from the cartridge's
+# pins toward its tip. With the stylus on +y (the original drawing) the only offset that lines the cartridge up
+# with the groove drags the needle backwards into its mount; the other offset is 57 deg off (what the first
+# prototype ran, thumping on 9 of 13 landings). On -y the aligned offset also drags the right way. The arm, its
+# headshell pad, tie tab, drop tab and the counterweight carriage are built in the original (+y) design frame and
+# mirrored by arm_side(); stylus_xy() and anchor_xy() put them on this side in the turntable frame.
+ARM_SIDE = -1
+
+
+def arm_side(shape):
+    """A part built in the arm's design frame, mirrored to the side the stylus actually swings on."""
+    if ARM_SIDE > 0:
+        return shape
+    from build123d import Plane, mirror
+    return mirror(shape, about=Plane.XZ)
+
+
+def groove_drag_ok(r=65.0):
+    """(offset from the groove in deg, True if the groove runs pins -> stylus) at radius r, clockwise platter."""
+    S = stylus_xy(r)
+    P = np.array([ARM_D, 0.0])
+    rear = (P - S) / np.linalg.norm(P - S)
+    a = math.radians(ARM_SIDE * headshell_sign() * ARM_BETA)
+    c = np.array([rear[0] * math.cos(a) - rear[1] * math.sin(a), rear[0] * math.sin(a) + rear[1] * math.cos(a)])
+    v = np.array([S[1], -S[0]]) / np.linalg.norm(S)
+    return math.degrees(math.acos(min(1.0, abs(float(np.dot(c, v)))))), bool(np.dot(v, c) < 0)
 
 # ---- servo (Feetech STS3215) -----------------------------------------------------------
 SERVO_L, SERVO_W, SERVO_H = 45.2, 24.7, 35.0   # body, datasheet
@@ -399,7 +426,8 @@ CART_H = MOUNT_T + CART_T + CART_TIP_DROP    # stylus tip to headshell underside
 
 
 def headshell_sign():
-    """Which way to turn the headshell so the cartridge lies along the groove."""
+    """Which way to turn the headshell so the cartridge lies along the groove, in the arm's design frame (stylus on
+    +y; arm_side() mirrors the finished parts when ARM_SIDE is -1, which flips the turn with them)."""
     r = 50.19
     xs = (ARM_D ** 2 + r ** 2 - ARM_L ** 2) / (2 * ARM_D)
     S = np.array([xs, math.sqrt(r * r - xs * xs)])
@@ -519,7 +547,7 @@ TOWER_H = TIP_Z - NEEDLE_OUT - 8.0               # tower top: 8 mm of sleeve sho
 
 def stylus_xy(r):
     xs = (ARM_D ** 2 + r * r - ARM_L ** 2) / (2 * ARM_D)
-    return np.array([xs, math.sqrt(max(r * r - xs * xs, 0.0))])
+    return np.array([xs, ARM_SIDE * math.sqrt(max(r * r - xs * xs, 0.0))])
 
 
 def arm_angle(r):
@@ -530,7 +558,7 @@ def arm_angle(r):
 
 def anchor_xy():
     a = math.radians(arm_angle(sum(GROOVE_R) / 2))
-    dx, dy = DROP
+    dx, dy = DROP[0], ARM_SIDE * DROP[1]                # DROP is in the design frame
     return np.array([ARM_D + dx * math.cos(a) - dy * math.sin(a), dx * math.sin(a) + dy * math.cos(a)])
 
 
@@ -609,7 +637,8 @@ def keepout():
     out = {}
     out["platter + record, 3 mm clear"] = Pos(0, 0, PLATTER_RIB_UNDERSIDE - 3) * Cylinder(
         PLAT_R + 3, Z_REC + 12 - (PLATTER_RIB_UNDERSIDE - 3), align=(Align.CENTER, Align.CENTER, Align.MIN))
-    a0, a1 = arm_angle(REST_R) - 6, arm_angle(44.0) + 6
+    a0, a1 = sorted((arm_angle(REST_R), arm_angle(44.0)))
+    a0, a1 = a0 - 6, a1 + 6
     reach = ARM_L + 30                                   # stylus + headshell + finger lift
     z0 = Z_ARM - CART_H - 3
     sweep = None
@@ -757,11 +786,11 @@ def assembly(r_stylus=65.0, platter_deg=0.0):
         "platter": (turn * Pos(0, 0, Z_HORN) * platter(), "platter"),
         "spindle": (turn * Pos(0, 0, Z_HORN + HUB_H) * spindle(), "platter"),
         "record 7 in": (turn * record(), "platter"),
-        "arm": (A * arm(), "arm"),
+        "arm": (A * arm_side(arm()), "arm"),
         "pivot screw": (A * pivot_screw(), "arm"),
-        "weight": (A * Pos(-60, 0, -(30 - 2 - BEAM - 0.5) - 0.3) * weight(), "arm"),
-        "cartridge (CKANDAY)": (A * shell_frame * cartridge(), "arm"),
-        "headshell": (A * shell_frame * cart_mount(), "arm"),
+        "weight": (A * arm_side(Pos(-60, 0, -(30 - 2 - BEAM - 0.5) - 0.3) * weight()), "arm"),
+        "cartridge (CKANDAY)": (A * arm_side(shell_frame * cartridge()), "arm"),
+        "headshell": (A * arm_side(shell_frame * cart_mount()), "arm"),
     }
 
 
@@ -784,11 +813,11 @@ def main():
         "spindle": spindle(),                       # key on the bed, column up: no overhang (Nov 22)
         "base": base(),
         "peg": peg(),                              # upright: the pin bore prints round
-        "arm": arm(),
-        "weight": Rot(X=180) * weight(),           # carriage roof on the bed
+        "arm": arm_side(arm()),
+        "weight": Rot(X=180) * arm_side(weight()),  # carriage roof on the bed
     }
     parts.update({f"shim_{t:.0f}": shim(t) for t in SHIMS})   # flat
-    parts["cart_mount"] = Rot(X=180) * cart_mount()    # headshell face on the bed, cheeks up
+    parts["cart_mount"] = Rot(X=180) * arm_side(cart_mount())    # headshell face on the bed, cheeks up
     for name, shape in parts.items():
         export_stl(shape, str(OUT / f"{name}.stl"))
         bb = shape.bounding_box()

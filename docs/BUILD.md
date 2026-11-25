@@ -4,17 +4,17 @@ The spine build is the smallest turntable that plays these records: a servo turn
 
 These plates are the revised design (Nov 24 2026): the pin is clamped so the pivot has no play, a skirt in a cup of liquid damps the arm's roll, the counterweight holds nuts in fixed holes, ribs grip the servo, and a ring clamps the disc's edge. The prototype that played was the earlier revision of the same parts. The revision is fit-checked in CAD but has not yet been built as a whole, so print the fit-test plate first.
 
-## Known issue: arm angle
+## Arm side
 
-The arm's offset angle is drawn for a disc turning counter-clockwise. The platter turns clockwise seen from above, because that is the only way the spiral plays forwards; don't reverse the motor, the song would play backwards. So the arm as drawn can't be right both ways:
+The platter turns clockwise seen from above, because that is the only way the spiral plays forwards; don't reverse the motor, the song would play backwards. The groove must run under the stylus from the cartridge's pins toward its tip, so the arm swings over the record on one particular side of the line from the pivot to the spindle. The first prototype's arm was drawn for the other side:
 
 | Setup | Cartridge off the groove | Disc under the stylus |
 |:--|:--|:--|
-| As in the CAD | 0.7° | runs from stylus to pins: drags the needle backwards into its mount |
+| First drawing | 0.7° | runs from stylus to pins: drags the needle backwards into its mount |
 | Same arm, on the side where the drag is correct | 56-57° | pins to stylus: correct |
-| Offset angle flipped in the CAD | 0.7° | pins to stylus: correct |
+| Mirrored arm (these files, since Nov 25 2026) | 0.7° | pins to stylus: correct |
 
-The prototype ran in the second row, and 9 of 13 landings thumped and carried little or none of the song. Turning the cartridge's mount round ended the thumping: every landing then followed the song. That arrangement was not photographed. The fix belongs in the CAD (the side is set by `turntable.headshell_sign()`, used by `headshell.beam_end_in_cartridge_frame()`), and is pending. Until then, check the cartridge lies along the groove before playing.
+The prototype ran in the second row, and 9 of 13 landings thumped and carried little or none of the song. Turned round on its mount, every landing followed the song. The CAD now draws the third row: `turntable.ARM_SIDE = -1` mirrors the arm, its pad, tie and drop tabs and the counterweight carriage, and `spine.py` checks the drag direction every time it builds. The headshell, damper skirt and cartridge are symmetric, so they are the same either way.
 
 ## Parts
 
@@ -60,7 +60,7 @@ PLA, 0.20 mm layers, no supports; every part is already in print orientation. Th
 1. **Spindle.** After the horn screws are in, drop the keyed spindle into the platter's hub from the top, its cross into the four screw-slot counterbores. It rests on the screw heads.
 2. **Pivot.** Screw the M3 × 8 head-down into the arm's hub with a 2 mm key until the head bottoms. Drop the 4 mm shim into the tower slot, then the T-pin point-up with its bar down the slot. Slide the sleeve over the pin with its slot facing the screw hole. Turn the M3 × 12 in through the spot face until it stops on the pin, then a quarter turn more: pin and sleeve should not move at all.
 3. **Servo.** Plug the cable into the servo's underside, then press the servo into its pocket from above. The ribs hold it; no glue. Screw the platter to the horn with the four M3 × 6 from the servo's bag.
-4. **Cartridge.** Press an M2 nut into the hex trap at the foot of each headshell boss. Lay the 16 mm filament dowel in the groove under the arm's pad, set the headshell on it, and bolt it with the two M2 × 12; the dowel sets the angle, the bolts only clamp. Push the cartridge up into the headshell, stylus forward and the tab at the back in its slot, until it stops. See the known issue above.
+4. **Cartridge.** Press an M2 nut into the hex trap at the foot of each headshell boss. Lay the 16 mm filament dowel in the groove under the arm's pad, set the headshell on it, and bolt it with the two M2 × 12; the dowel sets the angle, the bolts only clamp. Push the cartridge up into the headshell, stylus forward and the tab at the back in its slot, until it stops.
 5. **Wiring.** Seen from behind, the cartridge's four pins are L+ upper left, R+ upper right, and the two grounds the lower, closer pair. Join L+ and R+ (a mono lateral groove gives both channels the same signal). Run the leads through the beam's tunnel and out by the hub. Keep them short and twisted: mains hum is the largest noise at rest.
 6. **Damper.** Slide the cup over the sleeve onto the tower top. Push the two 6 mm dowels into the hub's underside and press the skirt onto them. Fill the cup about 6 mm deep with dish soap (or 4-5 mm with honey). Lower the arm onto the pin: the skirt drops into the cup.
 7. **Balance.** Put the carriage on the stub at its end. Push acorn nuts into the low row first until the stylus force reads 5 g, then slide nuts along their holes until the headshell sits parallel to the record. The counterweight must hang on the side away from the cartridge: put on backwards, it lets the arm roll and the stylus walks out of the groove.

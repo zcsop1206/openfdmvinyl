@@ -271,8 +271,9 @@ def balance(force_g=5.0, carriage_x=-34.0, shift=0.0, verbose=False):
     a, b = np.array([0, 0, tip_z]), np.array([T.ARM_L, 0, -T.CART_H])
     u = (b - a) / np.linalg.norm(b - a)
     v = g - a - ((g - a) @ u) * u
-    return dict(need=need, nuts=n, force=float(f_real), mass=float(m), depth=float(-v[2]), side=float(v[1]),
-                roll=math.degrees(math.atan2(v[1], -v[2])), carriage_g=mw)
+    # computed in the arm's design frame; arm_side() mirrors the real arm, so the sideways offset and roll flip
+    return dict(need=need, nuts=n, force=float(f_real), mass=float(m), depth=float(-v[2]), side=float(T.ARM_SIDE * v[1]),
+                roll=math.degrees(math.atan2(T.ARM_SIDE * v[1], -v[2])), carriage_g=mw)
 
 
 def damper_estimate(mu=0.5, fill_above_floor=5.0, f_roll=2.8, depth=None, mass=None):
@@ -333,20 +334,20 @@ def checks():
     ov = dist(cp, sp) ; say(f"cup on the tower top: gap {ov:.3f} mm", ov < 0.02)
     say(f"cup centred by the sleeve: inner tube {2 * CUP_IN[0]:.1f} on the {T.PEG_D:.1f} sleeve (prints ~0.3 under)")
     A = Pos(T.ARM_D, 0, T.Z_ARM) * Rot(Z=T.arm_angle(65))
-    sk = A * skirt()
+    sk = A * T.arm_side(skirt())
     d1, d2 = dist(sk, cp), dist(sk, sl_w)
     say(f"skirt in the cup: {d1:.2f} mm to the walls (gaps {SKIRT_R[0] - CUP_IN[1]:.1f} / {CUP_OUT[0] - SKIRT_R[1]:.1f}), "
         f"{skirt_bottom_z() - CUP_FLOOR[1]:.1f} above the floor; washer {d2:.2f} mm over the sleeve top",
         d1 > 0.9 and d2 > 0.6)
     from headshell import common
-    ov = common(sk, A * T.arm()) + common(A * dowels(), A * T.arm()) * 0
+    ov = common(sk, A * T.arm_side(T.arm())) + common(A * T.arm_side(dowels()), A * T.arm_side(T.arm())) * 0
     say(f"skirt | arm overlap {ov:.3f} mm3 (washer flat on the hub underside, two dowels)", ov < 0.01)
-    d3 = dist(A * T.arm(), cp)
+    d3 = dist(A * T.arm_side(T.arm()), cp)
     say(f"cup top to the arm (hub, stub, carriage): {d3:.2f} mm", d3 > 1.5)
     for tilt in (2.5, -2.5):
         Ap = Pos(T.ARM_D, 0, T.Z_ARM + T.CONE_H + T.PIVOT_RISE) * Rot(Z=T.arm_angle(65)) * Rot(Y=tilt) * \
             Pos(0, 0, -(T.CONE_H + T.PIVOT_RISE))
-        d = min(dist(Ap * skirt(), cp), dist(Ap * skirt(), sl_w))
+        d = min(dist(Ap * T.arm_side(skirt()), cp), dist(Ap * T.arm_side(skirt()), sl_w))
         say(f"arm pitched {tilt:+.1f} deg (stylus {'lifted' if tilt > 0 else 'dropped'} ~{abs(tilt) * 2.36:.0f} mm): skirt "
             f"clears by {d:.2f} mm", d > 0.15)
     stop = math.degrees(math.asin((CUP_OUT[0] - SKIRT_R[1]) / (T.Z_ARM + T.CONE_H + T.PIVOT_RISE - skirt_bottom_z())))

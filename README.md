@@ -45,7 +45,7 @@ Print the resulting `.gcode` (or `.gcode.3mf` on a Bambu printer, started from t
 ## Status and known issues
 
 - Only one printer has printed discs that play: a Bambu P1S, 0.4 mm nozzle, PLA. Other printers are covered by `docs/ADAPTING_YOUR_PRINTER.md` but untested.
-- **The arm's offset angle is drawn mirrored** for this platter's spin direction (clockwise seen from above). As printed and mounted the way the drag is correct, the cartridge sits about 56° off the groove and most landings thump. Turning the cartridge mount round fixed it on the prototype; see `docs/BUILD.md`, "Known issue: arm angle". The CAD fix is pending.
+- The arm is drawn for this platter's clockwise spin as of Nov 25 2026 (`docs/BUILD.md`, "Arm side"). The prototype's first arm was drawn for the other direction; the mirrored parts have not been printed yet.
 - The groove settings are not final. One wall layer landed better than two; spacing and the tracking limit are being compared on a Taguchi test disc (`make_taguchi_disc.py`, `analyze_taguchi.py`).
 - Many plays pulse in loudness at about 2.8 Hz. The servo is ruled out; the arm's undamped roll is the suspect, and the reprint adds a damper.
 

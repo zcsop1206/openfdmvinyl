@@ -64,10 +64,10 @@ def coupons():
     yw = T.SERVO_W / 2 + T.FIT
     c["fit_servo"] = sp & box(x_near - 4.5, x_far + 4.5, -yw - 4.5, yw + 4.5, T.FLOOR + T.POCKET_H - 9.5, T.FLOOR + T.POCKET_H + 1)
     c["fit_sleeve"] = SD.sleeve() & box(-6, 6, -6, 6, 0, 18.0)
-    arm = T.arm()
+    arm = T.arm_side(T.arm())                          # mirrored to the side it plays on (Nov 25)
     c["fit_hub"] = arm & box(-11, 11, -11, 11, -1, T.HUB_T + 1)
     c["fit_stub"] = arm & box(-T.STUB_L, -T.STUB_L + 20, -T.BEAM / 2 - 0.5, T.BEAM / 2 + 0.5, -1, T.BEAM + 1)
-    car = (Rot(X=180) * (T.weight() & box(-4, 4, -20, 20, -40, 40))).solids()               # roof down; the window
+    car = (Rot(X=180) * (T.arm_side(T.weight()) & box(-4, 4, -20, 20, -40, 40))).solids()               # roof down; the window
     car = sorted(car, key=lambda x: x.bounding_box().min.Z)                                  # splits the slice in two
     c["fit_carriage"], c["fit_carriage_nuts"] = car[0], car[-1]
     p = S.open_platter()

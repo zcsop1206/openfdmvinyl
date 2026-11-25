@@ -138,14 +138,18 @@ def open_platter():
 def main():
     OUT.mkdir(exist_ok=True)
     print(f"arm {T.ARM_L} mm, pivot {T.ARM_D} mm, offset {T.ARM_BETA:.2f} deg: max tracking error {tracking_error():.2f} deg")
-    parts = {"spine": spine(), "platter_open": Rot(X=180) * open_platter(), "arm": T.arm(),
-             "weight": Rot(X=180) * T.weight(), "peg": T.peg(), "spindle": T.spindle()}   # key down (Nov 22)
+    for r in T.GROOVE_R:
+        off, ok = T.groove_drag_ok(r)
+        print(f"  r {r:.0f}: cartridge {off:.2f} deg off the groove, groove runs {'pins -> stylus' if ok else 'stylus -> pins (BACKWARDS)'}")
+        assert off < 1.0 and ok, "arm drawn for the wrong spin direction"
+    parts = {"spine": spine(), "platter_open": Rot(X=180) * open_platter(), "arm": T.arm_side(T.arm()),
+             "weight": Rot(X=180) * T.arm_side(T.weight()), "peg": T.peg(), "spindle": T.spindle()}   # key down (Nov 22)
     parts.update({f"shim_{t:.0f}": T.shim(t) for t in T.SHIMS})
-    parts["headshell"] = Rot(X=180) * Pos(0, 0, -HS.TOP_Z) * HS.headshell()  # top face down (headshell.py)
+    parts["headshell"] = Rot(X=180) * Pos(0, 0, -HS.TOP_Z) * T.arm_side(HS.headshell())  # top face down; symmetric
     for k, d in enumerate(T.SPINDLE_SET, 1):                                 # disc-hole fit set (Nov 22)
         parts[f"spindle_{round(d * 100)}"] = T.spindle(d, marks=k)
     parts["damper_cup"] = Pos(0, 0, -SD.CUP_FLOOR[0]) * SD.cup()           # floor down (Nov 24)
-    parts["damper_skirt"] = Rot(X=180) * SD.skirt()                          # washer down
+    parts["damper_skirt"] = Rot(X=180) * T.arm_side(SD.skirt())             # washer down; symmetric
     parts["clamp_ring"] = Rot(X=180) * RC.ring()                             # flange down
     parts["centre_weight"] = RC.centre_weight()                              # as it sits (Nov 24)
     for name, shape in parts.items():
