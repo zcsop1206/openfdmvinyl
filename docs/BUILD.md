@@ -4,6 +4,10 @@ The spine build is the smallest turntable that plays these records: a servo turn
 
 These plates are the revised design (Nov 24 2026): the pin is clamped so the pivot has no play, a skirt in a cup of liquid damps the arm's roll, the counterweight holds nuts in fixed holes, ribs grip the servo, and a ring clamps the disc's edge. The prototype that played was the earlier revision of the same parts. The revision is fit-checked in CAD but has not yet been built as a whole, so print the fit-test plate first.
 
+![The spine turntable, rendered from the CAD: the servo in its pocket turns the platter directly, and the arm balances on a T-pin at the top of the tower](figures/build_assembly.png)
+
+The figures here are rendered from the CAD (`hardware/turntable/cad/build_figures.py`), not photographed.
+
 ## Arm side
 
 The platter turns clockwise seen from above, because that is the only way the spiral plays forwards; don't reverse the motor, the song would play backwards. The groove must run under the stylus from the cartridge's pins toward its tip, so the arm swings over the record on one particular side of the line from the pivot to the spindle. The first prototype's arm was drawn for the other side:
@@ -14,7 +18,9 @@ The platter turns clockwise seen from above, because that is the only way the sp
 | Same arm, on the side where the drag is correct | 56-57° | pins to stylus: correct |
 | Mirrored arm (these files, since Nov 25 2026) | 0.7° | pins to stylus: correct |
 
-The prototype ran in the second row, and 9 of 13 landings thumped and carried little or none of the song. Turned round on its mount, every landing followed the song. The CAD now draws the third row: `turntable.ARM_SIDE = -1` mirrors the arm, its pad, tie and drop tabs and the counterweight carriage, and `spine.py` checks the drag direction every time it builds. The headshell, damper skirt and cartridge are symmetric, so they are the same either way.
+The prototype ran in the second row, and 9 of 13 landings thumped and carried little or none of the song. Turned round on its mount, every landing followed the song. The CAD now draws the third row: `turntable.ARM_SIDE = -1` mirrors the arm, its pad, tie and drop tabs and the counterweight carriage, and `spine.py` checks the drag direction every time it builds.
+
+![Seen from above: the platter turns clockwise, so under the stylus the groove runs from the cartridge's pins to its tip](figures/build_top.png) The headshell, damper skirt and cartridge are symmetric, so they are the same either way.
 
 ## Parts
 
@@ -59,6 +65,9 @@ PLA, 0.20 mm layers, no supports; every part is already in print orientation. Th
 
 1. **Spindle.** After the horn screws are in, drop the keyed spindle into the platter's hub from the top, its cross into the four screw-slot counterbores. It rests on the screw heads.
 2. **Pivot.** Screw the M3 × 8 head-down into the arm's hub with a 2 mm key until the head bottoms. Drop the 4 mm shim into the tower slot, then the T-pin point-up with its bar down the slot. Slide the sleeve over the pin with its slot facing the screw hole. Turn the M3 × 12 in through the spot face until it stops on the pin, then a quarter turn more: pin and sleeve should not move at all.
+
+   ![Section through the pivot: the T-pin stands point-up in the clamped sleeve, its point in the M3 screw's cup, with the damper skirt in its cup below the hub](figures/build_pivot.png)
+
 3. **Servo.** Plug the cable into the servo's underside, then press the servo into its pocket from above. The ribs hold it; no glue. Screw the platter to the horn with the four M3 × 6 from the servo's bag.
 4. **Cartridge.** Press an M2 nut into the hex trap at the foot of each headshell boss. Lay the 16 mm filament dowel in the groove under the arm's pad, set the headshell on it, and bolt it with the two M2 × 12; the dowel sets the angle, the bolts only clamp. Push the cartridge up into the headshell, stylus forward and the tab at the back in its slot, until it stops.
 5. **Wiring.** Seen from behind, the cartridge's four pins are L+ upper left, R+ upper right, and the two grounds the lower, closer pair. Join L+ and R+ (a mono lateral groove gives both channels the same signal). Run the leads through the beam's tunnel and out by the hub. Keep them short and twisted: mains hum is the largest noise at rest.
@@ -96,7 +105,7 @@ python hardware/turntable/test_disc/make_test_disc.py
 python hardware/turntable/test_disc/make_song_disc.py SONG.wav --start 12 --name mysong
 ```
 
-Print the test disc first. `analyze_test_disc.py TAKE.wav` reports speed, wow, each tone against its predicted level, where tracking stops and the noise floor. The scripts slice the blank with Bambu Studio's command line; on any other setup, slice `printers/disc7_blank.stl` yourself and set `OV_BASE_GCODE` (see `docs/ADAPTING_YOUR_PRINTER.md`).
+Print the test disc first. On a Bambu P1S (0.4 mm nozzle, PLA), `hardware/turntable/test_disc/test_disc_7in_40rpm_p1s.gcode.3mf` is the test disc that played on the prototype (Nov 22 2026), ready to print with no Python or slicer. `analyze_test_disc.py TAKE.wav` reports speed, wow, each tone against its predicted level, where tracking stops and the noise floor. The scripts slice the blank with Bambu Studio's command line; on any other setup, slice `printers/disc7_blank.stl` yourself and set `OV_BASE_GCODE` (see `docs/ADAPTING_YOUR_PRINTER.md`).
 
 On a Bambu printer, copy the `.gcode.3mf` to the microSD card and start it from the printer's own screen. Bambu Studio re-slices any `.gcode.3mf` it opens and drops the groove. The base takes about 38 minutes, then the nozzle traces the spiral for 20 to 30 minutes.
 

@@ -40,6 +40,8 @@ python hardware/turntable/test_disc/make_test_disc.py      # tones and an amplit
 python hardware/turntable/test_disc/make_song_disc.py SONG.wav --start 12 --name mysong
 ```
 
+On a Bambu P1S you can skip all of this for a first disc: `hardware/turntable/test_disc/test_disc_7in_40rpm_p1s.gcode.3mf` is the test disc that played, ready to print.
+
 Print the resulting `.gcode` (or `.gcode.3mf` on a Bambu printer, started from the printer's own screen) as it is. Opening it in a slicer and exporting again drops the groove.
 
 ## Status and known issues
@@ -53,6 +55,8 @@ Print the resulting `.gcode` (or `.gcode.3mf` on a Bambu printer, started from t
 
 A first version (2026, with Samantha Chan on the turntable CAD and Niegel Fernandes on electronics) cut audio as groove depth through a mesh and a slicer. It played, barely. This version reverses that decision: it cuts sideways, on the printer's precise XY axes, and writes the G-code directly. Amanda Ghassaei's 3D-printed records (2012) are where the idea started.
 
+The write-up, with the derivations behind the groove limits: https://aditbhargava.me/projects/openvinyl
+
 ## License
 
-Code (`src/`, `tests/`, the Python scripts): MIT, see `LICENSE`. Hardware (CAD, STLs, print plates): CERN-OHL-P-2.0, see `LICENSE-HARDWARE.md` for what it covers and `LICENSE-HARDWARE.txt` for the text. `hardware/turntable/cad/vendor/STS3215_03a.step` is from TheRobotStudio/SO-ARM100 under Apache-2.0 (see the vendor folder).
+Code (`src/`, `tests/`, the Python scripts): MIT, see `LICENSE`. Hardware (CAD, STLs, print plates): CERN-OHL-P-2.0, see `LICENSE-HARDWARE.md` for what it covers and `LICENSE-HARDWARE.txt` for the text. `hardware/turntable/cad/vendor/STS3215_03a.step` is from TheRobotStudio/SO-ARM100 under Apache-2.0 (see the vendor folder). Documentation and figures (`docs/`): CC BY 4.0, https://creativecommons.org/licenses/by/4.0/
