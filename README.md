@@ -8,6 +8,8 @@ The encoder turns a WAV file into the printer's own G-code. The groove is two be
 
 What it does today: a 7 inch disc at 40 RPM holds about 32 seconds of mono music, printed on a Bambu Lab P1S in about 70 minutes, and played start to finish on the printed turntable with a ceramic cartridge recorded by an Arduino. It is a working record, not a good one: the band is roughly 120 Hz to 500-850 Hz, and the surface noise is high.
 
+The video, from the first play to the encoder and the arm: https://youtu.be/4QtXdsvd4KA
+
 ## What's here
 
 | Path | What |
