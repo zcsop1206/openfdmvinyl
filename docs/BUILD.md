@@ -105,9 +105,9 @@ python hardware/turntable/test_disc/make_test_disc.py
 python hardware/turntable/test_disc/make_song_disc.py SONG.wav --start 12 --name mysong
 ```
 
-Print the test disc first. On a Bambu P1S (0.4 mm nozzle, PLA), `hardware/turntable/test_disc/test_disc_7in_40rpm_p1s.gcode.3mf` is the test disc that played on the prototype (Nov 22 2026), ready to print with no Python or slicer. `analyze_test_disc.py TAKE.wav` reports speed, wow, each tone against its predicted level, where tracking stops and the noise floor. The scripts slice the blank with Bambu Studio's command line; on any other setup, slice `printers/disc7_blank.stl` yourself and set `OV_BASE_GCODE` (see `docs/ADAPTING_YOUR_PRINTER.md`).
+Print the test disc first. On a Bambu P1S (0.4 mm nozzle, PLA), `hardware/turntable/test_disc/test_disc_7in_40rpm_p1s.gcode.3mf` is the test disc that played on the prototype (Nov 22 2026), ready to print with no Python or slicer. Analyse a recording of it with `python hardware/turntable/test_disc/analyze_test_disc.py TAKE.wav --manifest hardware/turntable/test_disc/test_disc_7in_40rpm_p1s.manifest.json` (a disc you make yourself writes its own manifest to `out/testdisc/`, the default). It reports speed, wow, each tone against its predicted level, where tracking stops and the noise floor. The scripts slice the blank with Bambu Studio's command line; on any other setup, slice `printers/disc7_blank.stl` yourself and set `OV_BASE_GCODE` (see `docs/ADAPTING_YOUR_PRINTER.md`).
 
-On a Bambu printer, copy the `.gcode.3mf` to the microSD card and start it from the printer's own screen. Bambu Studio re-slices any `.gcode.3mf` it opens and drops the groove. The base takes about 38 minutes, then the nozzle traces the spiral for 20 to 30 minutes.
+On a Bambu printer, copy the `.gcode.3mf` to the microSD card and start it from the printer's own screen. Bambu Studio re-slices any `.gcode.3mf` it opens and drops the groove. The base takes about 38 minutes, then the nozzle traces the spiral: about 11 minutes for the test disc, 20 to 30 for a song disc.
 
 Clean a take:
 

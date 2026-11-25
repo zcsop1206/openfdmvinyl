@@ -1,0 +1,177 @@
+{
+ "rpm": 40.0,
+ "pitch_mm": 1.648,
+ "a_max_um": 80.0,
+ "lead_in_turns": 1.0,
+ "fs": 44100,
+ "sections": [
+  {
+   "kind": "silence outer",
+   "t0": 0.0,
+   "t1": 3.0,
+   "f_hz": 0.0,
+   "a_um": 0.0,
+   "r_start_mm": 82.4,
+   "r_end_mm": 79.1
+  },
+  {
+   "kind": "reference outer",
+   "t0": 3.0,
+   "t1": 6.0,
+   "f_hz": 333.0,
+   "a_um": 20.0,
+   "r_start_mm": 79.1,
+   "r_end_mm": 75.8,
+   "predicted_rel_level": 1.0
+  },
+  {
+   "kind": "tone 698 Hz",
+   "t0": 6.3,
+   "t1": 7.7,
+   "f_hz": 698.0,
+   "a_um": 4.0,
+   "r_start_mm": 75.4,
+   "r_end_mm": 73.9,
+   "predicted_rel_level": 0.0223
+  },
+  {
+   "kind": "tone 627 Hz",
+   "t0": 8.0,
+   "t1": 9.4,
+   "f_hz": 627.0,
+   "a_um": 5.0,
+   "r_start_mm": 73.6,
+   "r_end_mm": 72.0,
+   "predicted_rel_level": 0.0089
+  },
+  {
+   "kind": "tone 498 Hz",
+   "t0": 9.7,
+   "t1": 11.1,
+   "f_hz": 498.0,
+   "a_um": 7.0,
+   "r_start_mm": 71.7,
+   "r_end_mm": 70.2,
+   "predicted_rel_level": 0.1274
+  },
+  {
+   "kind": "tone 398 Hz",
+   "t0": 11.4,
+   "t1": 12.8,
+   "f_hz": 398.0,
+   "a_um": 11.0,
+   "r_start_mm": 69.8,
+   "r_end_mm": 68.3,
+   "predicted_rel_level": 0.4597
+  },
+  {
+   "kind": "tone 333 Hz",
+   "t0": 13.1,
+   "t1": 14.5,
+   "f_hz": 333.0,
+   "a_um": 15.0,
+   "r_start_mm": 68.0,
+   "r_end_mm": 66.4,
+   "predicted_rel_level": 0.829
+  },
+  {
+   "kind": "tone 198 Hz",
+   "t0": 14.8,
+   "t1": 16.2,
+   "f_hz": 198.0,
+   "a_um": 25.0,
+   "r_start_mm": 66.1,
+   "r_end_mm": 64.6,
+   "predicted_rel_level": 1.7987
+  },
+  {
+   "kind": "tone 147 Hz",
+   "t0": 16.5,
+   "t1": 17.9,
+   "f_hz": 147.0,
+   "a_um": 25.0,
+   "r_start_mm": 64.2,
+   "r_end_mm": 62.7,
+   "predicted_rel_level": 2.0669
+  },
+  {
+   "kind": "tone 98 Hz",
+   "t0": 18.2,
+   "t1": 19.6,
+   "f_hz": 98.0,
+   "a_um": 25.0,
+   "r_start_mm": 62.4,
+   "r_end_mm": 60.8,
+   "predicted_rel_level": 2.2519
+  },
+  {
+   "kind": "ladder 10 um",
+   "t0": 19.9,
+   "t1": 21.3,
+   "f_hz": 110.0,
+   "a_um": 10.0,
+   "r_start_mm": 60.5,
+   "r_end_mm": 59.0,
+   "predicted_rel_level": 2.1977
+  },
+  {
+   "kind": "ladder 20 um",
+   "t0": 21.6,
+   "t1": 23.0,
+   "f_hz": 110.0,
+   "a_um": 20.0,
+   "r_start_mm": 58.6,
+   "r_end_mm": 57.1,
+   "predicted_rel_level": 2.1859
+  },
+  {
+   "kind": "ladder 40 um",
+   "t0": 23.3,
+   "t1": 24.7,
+   "f_hz": 110.0,
+   "a_um": 40.0,
+   "r_start_mm": 56.8,
+   "r_end_mm": 55.2,
+   "predicted_rel_level": 2.1734
+  },
+  {
+   "kind": "ladder 60 um",
+   "t0": 25.0,
+   "t1": 26.4,
+   "f_hz": 110.0,
+   "a_um": 60.0,
+   "r_start_mm": 54.9,
+   "r_end_mm": 53.3,
+   "predicted_rel_level": 2.1584
+  },
+  {
+   "kind": "ladder 80 um",
+   "t0": 26.7,
+   "t1": 28.1,
+   "f_hz": 110.0,
+   "a_um": 80.0,
+   "r_start_mm": 53.0,
+   "r_end_mm": 51.5,
+   "predicted_rel_level": 2.1416
+  },
+  {
+   "kind": "reference inner",
+   "t0": 28.4,
+   "t1": 30.8,
+   "f_hz": 333.0,
+   "a_um": 8.0,
+   "r_start_mm": 51.1,
+   "r_end_mm": 48.5,
+   "predicted_rel_level": 0.3731
+  },
+  {
+   "kind": "silence inner",
+   "t0": 30.8,
+   "t1": 31.4,
+   "f_hz": 0.0,
+   "a_um": 0.0,
+   "r_start_mm": 48.5,
+   "r_end_mm": 47.9
+  }
+ ]
+}
